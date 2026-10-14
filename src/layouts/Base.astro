@@ -12,8 +12,6 @@ interface Props {
   bg: string;
 }
 const { title, bg } = Astro.props;
-const norm = (p: string) => p.replace(/\/$/, '') || '/';
-const current = norm(Astro.url.pathname);
 const description =
   'Laura Gómez — English <> Spanish (LATAM) translator. Specialized, general, literary and audiovisual translation.';
 ---
@@ -30,7 +28,7 @@ const description =
   </head>
   <body style={`background:${bg}`}>
     <header class="bg-nav sticky top-0 z-50 flex h-(--nav-h) items-center justify-end px-4">
-      <details class="relative">
+      <details class="relative" id="menu">
         <summary
           class="flex h-9 w-9 cursor-pointer list-none items-center justify-center [&::-webkit-details-marker]:hidden"
           aria-label="Navigation Menu"
@@ -44,10 +42,7 @@ const description =
             nav.map((item) => (
               <a
                 href={item.href}
-                class:list={[
-                  'px-5 py-2 text-[17px] text-black no-underline hover:bg-black/10',
-                  norm(item.href) === current && 'font-semibold',
-                ]}
+                class="px-5 py-2 text-[17px] text-black no-underline hover:bg-black/10"
               >
                 {item.title}
               </a>
@@ -59,5 +54,13 @@ const description =
     <main>
       <slot />
     </main>
+    <script>
+      // Close the menu after picking a section or clicking outside it
+      const menu = document.getElementById('menu') as HTMLDetailsElement;
+      document.addEventListener('click', (e) => {
+        const t = e.target as HTMLElement;
+        if (t.closest('#menu a') || !t.closest('#menu')) menu.open = false;
+      });
+    </script>
   </body>
 </html>

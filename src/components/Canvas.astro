@@ -3,8 +3,9 @@ import type { El, Page } from '../data/pages';
 
 interface Props {
   page: Page;
+  heading?: 'h1' | 'h2';
 }
-const { page } = Astro.props;
+const { page, heading = 'h2' } = Astro.props;
 const all: El[] = [...page.deco, ...page.groups.flat()];
 
 const n = (v: number) => +v.toFixed(3);
@@ -43,7 +44,7 @@ const isCard = (g: El[]) => g.some((e) => e.t === 'fill');
           );
         }
         if (e.t === 'txt') {
-          const Tag = e.h1 ? 'h1' : 'div';
+          const Tag = e.h1 ? heading : 'div';
           return (
             <Tag class="el m-0 font-normal" style={box(e) + (oneLine(e) ? 'white-space:nowrap;' : '')}>
               <div style={textStyle(e)} set:html={e.html} />
@@ -107,7 +108,7 @@ const isCard = (g: El[]) => g.some((e) => e.t === 'fill');
       >
         {g.map((e) => {
           if (e.t === 'txt') {
-            const Tag = e.h1 ? 'h1' : 'div';
+            const Tag = e.h1 ? heading : 'div';
             return (
               <Tag
                 class="m-0 w-full [&_br]:hidden [&_ul]:list-disc [&_ul]:pl-5"

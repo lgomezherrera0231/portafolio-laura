@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import Canvas from '../components/Canvas.astro';
+import { pages } from '../data/pages';
+---
+
+<Base title="Home" bg={pages[0].bg}>
+  {
+    pages.map((page, i) => (
+      <section id={page.slug || 'home'} class="scroll-mt-(--nav-h)" aria-label={page.title}>
+        <Canvas page={page} heading={i === 0 ? 'h1' : 'h2'} />
+      </section>
+    ))
+  }
+</Base>

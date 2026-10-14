@@ -7,6 +7,10 @@
   --color-ink: #231f20;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --nav-h: 44px;
   /* 1 design pixel: the 1351x770 Canva page scaled to fit the viewport */

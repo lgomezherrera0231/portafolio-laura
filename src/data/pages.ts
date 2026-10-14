@@ -94,8 +94,8 @@ export const pages: Page[] = [
         T('Laura Gómez', 368.87, 241.47, 613.26, 80.88, 96, 115, S7, { fw: 700, r: -6.08, up: 1, h1: 1 }),
         T('English &lt;&gt; Spanish (LATAM) Translator', 432.74, 322.27, 485.52, 29.15, 69.33, 83, 0.35118, { r: -6.08 }),
         T('Specialized translation, general translation,<br>literary translation and audiovisual translation.', 402.62, 393.72, 545.77, 53.41, 23.29, 27, S, { r: -6.08 }),
-        B('Services', '/services', 432.26, 489.91, 240.71, 58.76, { r: -6.12, bg: '#99add0' }),
-        B('Contact', '/contact', 705.57, 462.72, 241.69, 55.87, { r: -5.93, bg: '#99add0' }),
+        B('Services', '#services', 432.26, 489.91, 240.71, 58.76, { r: -6.12, bg: '#99add0' }),
+        B('Contact', '#contact', 705.57, 462.72, 241.69, 55.87, { r: -5.93, bg: '#99add0' }),
       ],
     ],
   },
@@ -255,4 +255,4 @@ export const pages: Page[] = [
   },
 ];
 
-export const nav = pages.map((p) => ({ href: `/${p.slug}`, title: p.title }));
+export const nav = pages.map((p) => ({ href: `#${p.slug || 'home'}`, title: p.title }));
