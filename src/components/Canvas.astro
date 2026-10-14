@@ -1,0 +1,137 @@
+---
+import type { El, Page } from '../data/pages';
+
+interface Props {
+  page: Page;
+}
+const { page } = Astro.props;
+const all: El[] = [...page.deco, ...page.groups.flat()];
+
+const n = (v: number) => +v.toFixed(3);
+const box = (e: El) =>
+  `left:${n(e.x)}em;top:${n(e.y)}em;width:${n(e.w)}em;height:${n(e.h)}em;` +
+  (e.r ? `transform:rotate(${e.r}deg);` : '');
+const textStyle = (e: El) =>
+  `font-size:${n(e.fs * e.sc)}em;line-height:${n(e.lh / e.fs)};font-weight:${e.fw};text-align:${e.ta};color:${e.c};` +
+  (e.up ? 'text-transform:uppercase;' : '') +
+  (e.ty ? `transform:translateY(${n(e.ty / e.fs)}em);` : '');
+const oneLine = (e: El) => !e.html.includes('<') && e.h < e.lh * e.sc * 1.5;
+const external = (href?: string) => (href?.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {});
+// Mobile font size derived from the desktop one
+const mfs = (e: El) => Math.round(12 + e.fs * e.sc * 0.3);
+const isCard = (g: El[]) => g.some((e) => e.t === 'fill');
+---
+
+<!-- Desktop / tablet: replica of the Canva page, scaled to the viewport -->
+<div class="stage" style={`background:${page.bg}`}>
+  <div class="canvas">
+    {
+      all.map((e) => {
+        if (e.t === 'img') {
+          const img = (
+            <img
+              src={e.src}
+              alt={e.alt}
+              style={e.in ? `position:absolute;width:${e.in[0]}em;height:${e.in[1]}em;left:${e.in[2]}em;top:${e.in[3]}em` : undefined}
+            />
+          );
+          const style = box(e) + (e.in ? 'overflow:hidden;' : '');
+          return e.href ? (
+            <a class="el" style={style} href={e.href} {...external(e.href)} aria-label={e.alt}>{img}</a>
+          ) : (
+            <div class="el" style={style}>{img}</div>
+          );
+        }
+        if (e.t === 'txt') {
+          const Tag = e.h1 ? 'h1' : 'div';
+          return (
+            <Tag class="el m-0 font-normal" style={box(e) + (oneLine(e) ? 'white-space:nowrap;' : '')}>
+              <div style={textStyle(e)} set:html={e.html} />
+            </Tag>
+          );
+        }
+        if (e.t === 'btn') {
+          return (
+            <a
+              class="el btn"
+              href={e.href}
+              {...external(e.href)}
+              style={box(e) + `background:${e.bg};border:${n(3 * e.sc)}em solid #231f20;`}
+            >
+              <span style={`font-size:${n(e.fs * e.sc)}em`}>{e.label}</span>
+            </a>
+          );
+        }
+        if (e.t === 'fill') return <div class="el" style={box(e) + `background:${e.bg}`} />;
+        if (e.t === 'frame') return <div class="el box-border" style={box(e) + `border:${e.bw}em solid #000`} />;
+        if (e.t === 'video') {
+          return (
+            <div class="el bg-black" style={box(e)}>
+              <video src={e.src} poster={e.poster} controls preload="none" playsinline />
+            </div>
+          );
+        }
+      })
+    }
+  </div>
+</div>
+
+<!-- Mobile: same content stacked in reading order -->
+<div
+  class="flow relative min-h-[calc(100dvh-var(--nav-h))] flex-col items-center gap-6 overflow-hidden px-5 py-10"
+  style={`background:${page.bg}`}
+>
+  {
+    page.deco
+      .filter((e) => e.m)
+      .map((e) => (
+        <img
+          src={e.src}
+          alt=""
+          class:list={[
+            'pointer-events-none absolute w-28',
+            e.m === 'tr' && '-top-4 -right-6',
+            e.m === 'br' && '-right-8 bottom-2',
+          ]}
+        />
+      ))
+  }
+  {
+    page.groups.map((g) => (
+      <section
+        class:list={[
+          'relative z-10 flex w-full max-w-md items-center',
+          g.every((e) => e.icon) ? 'flex-row justify-center gap-6' : 'flex-col gap-3',
+          isCard(g) && 'border-4 border-black bg-[#fac2c5] p-5 outline-8 outline-[#fac2c5]',
+        ]}
+      >
+        {g.map((e) => {
+          if (e.t === 'txt') {
+            const Tag = e.h1 ? 'h1' : 'div';
+            return (
+              <Tag
+                class="m-0 w-full [&_br]:hidden [&_ul]:list-disc [&_ul]:pl-5"
+                style={`font-size:${mfs(e)}px;line-height:1.3;font-weight:${e.fw};color:${e.c};text-align:${e.ta === 'justify' ? 'left' : e.ta};${e.up ? 'text-transform:uppercase;' : ''}`}
+                set:html={e.html.replaceAll('<br>', '<br> ')}
+              />
+            );
+          }
+          if (e.t === 'btn') {
+            return (
+              <a class="btn border-ink border-[3px] px-10 py-3 text-lg" href={e.href} {...external(e.href)} style={`background:${e.bg}`}>
+                {e.label}
+              </a>
+            );
+          }
+          if (e.t === 'img') {
+            const img = <img src={e.src} alt={e.alt} class={e.icon ? 'w-14' : 'w-36'} />;
+            return e.href ? <a href={e.href} {...external(e.href)} aria-label={e.alt}>{img}</a> : img;
+          }
+          if (e.t === 'video') {
+            return <video class="aspect-video w-full bg-black" src={e.src} poster={e.poster} controls preload="none" playsinline />;
+          }
+        })}
+      </section>
+    ))
+  }
+</div>

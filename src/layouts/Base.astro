@@ -1,0 +1,63 @@
+---
+import '@fontsource/prompt/300.css';
+import '@fontsource/prompt/400.css';
+import '@fontsource/prompt/600.css';
+import '@fontsource/prompt/700.css';
+import '@fontsource/arimo/700.css';
+import '../styles/global.css';
+import { nav } from '../data/pages';
+
+interface Props {
+  title: string;
+  bg: string;
+}
+const { title, bg } = Astro.props;
+const norm = (p: string) => p.replace(/\/$/, '') || '/';
+const current = norm(Astro.url.pathname);
+const description =
+  'Laura Gómez — English <> Spanish (LATAM) translator. Specialized, general, literary and audiovisual translation.';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title === 'Home' ? 'Laura Gómez — Translator' : `${title} — Laura Gómez`}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#99add0" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body style={`background:${bg}`}>
+    <header class="bg-nav sticky top-0 z-50 flex h-(--nav-h) items-center justify-end px-4">
+      <details class="relative">
+        <summary
+          class="flex h-9 w-9 cursor-pointer list-none items-center justify-center [&::-webkit-details-marker]:hidden"
+          aria-label="Navigation Menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#231f20" stroke-width="2" stroke-linecap="round">
+            <path d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </summary>
+        <nav class="bg-nav absolute top-full right-0 mt-1 flex w-64 flex-col rounded-b-lg py-2 shadow-lg">
+          {
+            nav.map((item) => (
+              <a
+                href={item.href}
+                class:list={[
+                  'px-5 py-2 text-[17px] text-black no-underline hover:bg-black/10',
+                  norm(item.href) === current && 'font-semibold',
+                ]}
+              >
+                {item.title}
+              </a>
+            ))
+          }
+        </nav>
+      </details>
+    </header>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
