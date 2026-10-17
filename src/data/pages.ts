@@ -37,7 +37,7 @@ const B = (label: string, href: string, x: number, y: number, w: number, h: numb
   t: 'btn', label, href, x, y, w, h, fs: 18.67, sc: S, bg: BLUE, ...o,
 });
 const V = (src: string, x: number, y: number, w: number, h: number): El => ({
-  t: 'video', src: `/videos/${src}.mp4`, poster: `/videos/${src}.jpg`, x, y, w, h,
+  t: 'video', src: `https://www.youtube-nocookie.com/embed/${src}`, x, y, w, h,
 });
 // Sample cards: pink fill + black outline
 const card = (x: number, y: number): El[] => [
@@ -59,6 +59,8 @@ const butterflies = [
   I('butterfly-2.png', -68.98, 167.69, 199.85, 199.48, { r: -92.37 }),
 ];
 
+// YouTube IDs of the AVT samples, in page order
+const YT = ['Jc0EXFocbZI', 'Csct80XPqe0', '1lVL_IfXyZQ', 't_oCaBJ8c8s'];
 const avt = (n: number, video: [number, number, number, number], titleY: number, sub: El): Page => ({
   slug: `avt-sample-${n}`,
   title: 'AVT sample',
@@ -68,7 +70,7 @@ const avt = (n: number, video: [number, number, number, number], titleY: number,
     [
       T('Audiovisual translation samples', 199.34, titleY, 952.33, 71.74, 85.33, 102, S7, { fw: 600 }),
       sub,
-      V(`avt-${n}`, ...video),
+      V(YT[n - 1], ...video),
     ],
   ],
 });

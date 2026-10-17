@@ -68,7 +68,7 @@ const isCard = (g: El[]) => g.some((e) => e.t === 'fill');
         if (e.t === 'video') {
           return (
             <div class="el bg-black" style={box(e)}>
-              <video src={e.src} poster={e.poster} controls preload="none" playsinline />
+              <iframe class="h-full w-full" src={e.src} title="AVT sample" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen style="border:0" />
             </div>
           );
         }
@@ -129,7 +129,7 @@ const isCard = (g: El[]) => g.some((e) => e.t === 'fill');
             return e.href ? <a href={e.href} {...external(e.href)} aria-label={e.alt}>{img}</a> : img;
           }
           if (e.t === 'video') {
-            return <video class="aspect-video w-full bg-black" src={e.src} poster={e.poster} controls preload="none" playsinline />;
+            return <iframe class="aspect-video w-full bg-black" src={e.src} title="AVT sample" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen style="border:0" />;
           }
         })}
       </section>
