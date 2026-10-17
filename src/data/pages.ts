@@ -118,7 +118,7 @@ export const pages: Page[] = [
           'I have experience in subtitling and translating technical, literary, administrative, and marketing texts. I’ve been a volunteer translator for over 2 years, and now I’m ready to make a living out of this beatiful industry!',
           301.72, 199.06, 747.56, 371.29, 55.4, 77, S7, { fw: 300, c: '#fff', ta: 'justify', ty: -5.54 },
         ),
-        B('CV', gdoc('1Tpxa8GY6I3Ae00-enrJQDlefPL_hRYc5', 'usp=sharing'), 512.53, 611.89, 303.26, 67.58, { fs: 26.67 }),
+        B('CV', 'https://docs.google.com/document/d/1-sMqGJE-p2VZKHb9njzQb_DBcjPyuxNl/edit', 512.53, 611.89, 303.26, 67.58, { fs: 26.67 }),
       ],
     ],
   },
