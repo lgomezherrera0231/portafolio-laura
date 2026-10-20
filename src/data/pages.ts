@@ -197,7 +197,7 @@ export const pages: Page[] = [
     groups: [
       [T('Volunteering', 217.22, 91.08, 959.39, 67.52, 80, 96, S7, { fw: 600, h1: 1 })],
       [
-        I('ted.png', 217.22, 238.9, 326.82, 326.82, { href: 'https://www.ted.com/profiles/46825449/translator', alt: 'TED' }),
+        I('ted.png', 217.22, 238.9, 326.82, 326.82, { href: 'https://www.ted.com/profiles/45782894', alt: 'TED' }),
         T('Check my TED<br>Translators’<br>profile', 252.51, 593.69, 256.26, 125.65, 37.33, 52, 0.84593, { ty: -3.73 }),
       ],
       [
